@@ -4,6 +4,7 @@
 
 body {
 	overflow: hidden;
+	overflow-anchor: none;
 }
 
 .container {
@@ -46,11 +47,11 @@ body {
 }
 
 .num-input:invalid {
-	background-color: indianred;
+	background-color: lightcoral;
 }
 
 .num-input:invalid::placeholder {
-	color: lightgray;
+	color: whitesmoke;
 }
 
 .btn-container {

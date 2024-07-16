@@ -78,12 +78,12 @@ function copyNumber() {
 		if (number !== "!") {
 			navigator.clipboard.writeText(number).then(() => {
 				if (copyBtn.innerHTML === "Copy") {
-					copyBtn.innerHTML = "&#x2714;&#xFE0F;";
+					copyBtn.innerHTML = "&#x2713;";
 					setTimeout(() => copyBtn.innerHTML = "Copy", 2500);
 				}
 			});
 		} else {
-			copyBtn.innerHTML = "&#x274C;";
+			copyBtn.innerHTML = "&#x00D7;";
 			setTimeout(() => copyBtn.innerHTML = "Copy", 2500);
 		}
 	}
