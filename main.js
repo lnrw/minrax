@@ -1,8 +1,4 @@
 function getRandomBigIntInclusive(min, max) {
-	if (min > max) {
-		throw new Error('The minimum value must be less than or equal to the maximum value.');
-	}
-
 	const range = max - min + 1n;
 	const bitsNeeded = range.toString(2).length;
 
@@ -33,22 +29,45 @@ function getRandomBigIntInclusive(min, max) {
 	return randomValue + min;
 }
 
-function updateNumber() {
+var valid = true;
+const invalidMsg = "×";
+
+function updateNumber(fromButton) {
 	const minInput = document.getElementById("min");
 	const maxInput = document.getElementById("max");
-	const numDiv = document.querySelector(".random-number");
-	var valid = true;
-	if (/\p{L}|^$/u.test(minInput.value)) {
-		minInput.setCustomValidity("Please enter a number.");
-		numDiv.innerHTML = "!";
+	const output = document.querySelector(".number-output");
+	minInput.setCustomValidity("");
+	maxInput.setCustomValidity("");
+	valid = true;
+	if (!(/^[0-9]*$/.test(minInput.value))) {
+		minInput.setCustomValidity("Please enter an integer.");
+		output.innerHTML = invalidMsg;
+		valid = false;
+	} else if (minInput.value === "") {
+		if (fromButton) {
+			minInput.setCustomValidity("Please enter an integer.");
+		} else {
+			minInput.setCustomValidity("");
+		}
+		
+		output.innerHTML = invalidMsg;
 		valid = false;
 	} else {
 		minInput.setCustomValidity("");
 	}
 
-	if (/\p{L}|^$/u.test(maxInput.value)) {
-		maxInput.setCustomValidity("Please enter a number.");
-		numDiv.innerHTML = "!";
+	if (!(/^[0-9]*$/.test(maxInput.value))) {
+		maxInput.setCustomValidity("Please enter an integer.");
+		output.innerHTML = invalidMsg;
+		valid = false;
+	} else if (maxInput.value === "") {
+		if (fromButton) {
+			maxInput.setCustomValidity("Please enter an integer.");
+		} else {
+			maxInput.setCustomValidity("");
+		}
+		
+		output.innerHTML = invalidMsg;
 		valid = false;
 	} else {
 		maxInput.setCustomValidity("");
@@ -63,30 +82,34 @@ function updateNumber() {
 		const max = BigInt(maxInput.value);
 		if (min < max) {
 			const rand = BigInt(getRandomBigIntInclusive(min, max)).toString();
-			numDiv.innerHTML = rand;
+			output.innerHTML = rand;
 		} else {
 			minInput.setCustomValidity("Min must be less than max.");
-			numDiv.innerHTML = "!";
+			output.innerHTML = invalidMsg;
+			valid = false;
 		}
+	}
+	
+	if (fromButton) {
+		reportValidity();
 	}
 }
 
+var latestTimeout;
 function copyNumber() {
-	const number = document.querySelector(".random-number").innerHTML;
+	const number = document.querySelector(".number-output").innerHTML;
 	const copyBtn = document.getElementById("copyBtn");
-	if (copyBtn.innerHTML === "Copy") {
-		if (number !== "!") {
+		if (valid) {
 			navigator.clipboard.writeText(number).then(() => {
-				if (copyBtn.innerHTML === "Copy") {
-					copyBtn.innerHTML = "&#x2713;";
-					setTimeout(() => copyBtn.innerHTML = "Copy", 2500);
-				}
+				if (latestTimeout) clearTimeout(latestTimeout);
+				copyBtn.innerHTML = "✔";
+				latestTimeout = setTimeout(() => copyBtn.innerHTML = "Copy", 2500);
 			});
 		} else {
-			copyBtn.innerHTML = "&#x00D7;";
-			setTimeout(() => copyBtn.innerHTML = "Copy", 2500);
+			if (latestTimeout) clearTimeout(latestTimeout);
+			copyBtn.innerHTML = "✖";
+			latestTimeout = setTimeout(() => copyBtn.innerHTML = "Copy", 2500);
 		}
-	}
 }
 
 function reportValidity() {
@@ -101,15 +124,12 @@ window.addEventListener("load", updateNumber, {
 });
 
 const updateBtn = document.getElementById("updateBtn");
-updateBtn.addEventListener("click", () => {
-	reportValidity();
-	updateNumber();
-});
+updateBtn.addEventListener("click", () => updateNumber(true));
 
 const copyBtn = document.getElementById("copyBtn");
 copyBtn.addEventListener("click", copyNumber);
 
 const minInput = document.getElementById("min");
 const maxInput = document.getElementById("max");
-minInput.addEventListener("input", updateNumber);
-maxInput.addEventListener("input", updateNumber);
+minInput.addEventListener("input", () => updateNumber(false));
+maxInput.addEventListener("input", () => updateNumber(false));
