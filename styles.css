@@ -50,7 +50,7 @@ body {
 	background-color: lightcoral;
 }
 
-.num-input:invalid::placeholder {
+.num-input::placeholder {
 	color: gray;
 }
 

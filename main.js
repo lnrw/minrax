@@ -29,6 +29,7 @@ function getRandomBigIntInclusive(min, max) {
 	return randomValue + min;
 }
 
+
 var valid = true;
 const invalidMsg = "×";
 
@@ -49,7 +50,7 @@ function updateNumber(fromButton) {
 		} else {
 			minInput.setCustomValidity("");
 		}
-		
+
 		output.innerHTML = invalidMsg;
 		valid = false;
 	} else {
@@ -66,7 +67,7 @@ function updateNumber(fromButton) {
 		} else {
 			maxInput.setCustomValidity("");
 		}
-		
+
 		output.innerHTML = invalidMsg;
 		valid = false;
 	} else {
@@ -89,28 +90,31 @@ function updateNumber(fromButton) {
 			valid = false;
 		}
 	}
-	
+
 	if (fromButton) {
 		reportValidity();
 	}
 }
 
+
 var latestTimeout;
+
 function copyNumber() {
 	const number = document.querySelector(".number-output").innerHTML;
 	const copyBtn = document.getElementById("copyBtn");
-		if (valid) {
-			navigator.clipboard.writeText(number).then(() => {
-				if (latestTimeout) clearTimeout(latestTimeout);
-				copyBtn.innerHTML = "✔";
-				latestTimeout = setTimeout(() => copyBtn.innerHTML = "Copy", 2500);
-			});
-		} else {
+	if (valid) {
+		navigator.clipboard.writeText(number).then(() => {
 			if (latestTimeout) clearTimeout(latestTimeout);
-			copyBtn.innerHTML = "✖";
+			copyBtn.innerHTML = "✔";
 			latestTimeout = setTimeout(() => copyBtn.innerHTML = "Copy", 2500);
-		}
+		});
+	} else {
+		if (latestTimeout) clearTimeout(latestTimeout);
+		copyBtn.innerHTML = "✖";
+		latestTimeout = setTimeout(() => copyBtn.innerHTML = "Copy", 2500);
+	}
 }
+
 
 function reportValidity() {
 	const minInput = document.getElementById("min");
@@ -118,6 +122,7 @@ function reportValidity() {
 	maxInput.reportValidity();
 	minInput.reportValidity();
 }
+
 
 window.addEventListener("load", updateNumber, {
 	once: true
