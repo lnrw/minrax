@@ -1,2 +1,2 @@
 # minrax
-minimalist secure random number generator
+A minimalist secure random number generator.
