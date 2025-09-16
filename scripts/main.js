@@ -41,12 +41,12 @@ function updateNumber(fromButton) {
 	maxInput.setCustomValidity("");
 	valid = true;
 	if (!(/^[0-9]*$/.test(minInput.value))) {
-		minInput.setCustomValidity("Please enter an integer.");
+		minInput.setCustomValidity("Please enter a positive integer.");
 		output.innerHTML = invalidMsg;
 		valid = false;
 	} else if (minInput.value === "") {
 		if (fromButton) {
-			minInput.setCustomValidity("Please enter an integer.");
+			minInput.setCustomValidity("Please enter a positive integer.");
 		} else {
 			minInput.setCustomValidity("");
 		}
@@ -58,12 +58,12 @@ function updateNumber(fromButton) {
 	}
 
 	if (!(/^[0-9]*$/.test(maxInput.value))) {
-		maxInput.setCustomValidity("Please enter an integer.");
+		maxInput.setCustomValidity("Please enter a positive integer.");
 		output.innerHTML = invalidMsg;
 		valid = false;
 	} else if (maxInput.value === "") {
 		if (fromButton) {
-			maxInput.setCustomValidity("Please enter an integer.");
+			maxInput.setCustomValidity("Please enter a positive integer.");
 		} else {
 			maxInput.setCustomValidity("");
 		}
@@ -74,7 +74,7 @@ function updateNumber(fromButton) {
 		maxInput.setCustomValidity("");
 	}
 
-	if (valid === true) {
+	if (valid) {
 		var minVal = minInput.value;
 		var maxVal = maxInput.value;
 		while (minVal.charAt(0) === "0") minVal = minVal.substring(1);
